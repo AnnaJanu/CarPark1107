@@ -77,7 +77,9 @@ namespace CarParkProject_0506.Data.Services
 
         public void AddVehicle(Vehicle vehicle)
         {
-            if(vehicle == null || !vehicle.IsValid())
+            var vehicleToAdd = Vehicles.FirstOrDefault(v => v.Id == vehicle.Id);
+
+            if (vehicle == null || !vehicle.IsValid() || vehicleToAdd != null)
             {
                 throw new AddException();
             }
@@ -85,6 +87,40 @@ namespace CarParkProject_0506.Data.Services
             _vehicles.Add(vehicle);
 
             _carParkRepository.Save(_vehicles, AllVehiclesFilePath);
+        }
+
+        public void UpdateVehicle(Vehicle vehicleToUpdate)
+        {
+            var existingVehicle = _vehicles.FirstOrDefault(v => v.Id == vehicleToUpdate.Id);
+
+            if ( existingVehicle == null || vehicleToUpdate == null || vehicleToUpdate.IsValid()!)
+            {
+                throw new UpdateAutoException();
+            }
+
+            var pos = _vehicles.IndexOf(existingVehicle);
+            _vehicles.RemoveAt(pos);
+            _vehicles.Insert(pos, vehicleToUpdate);
+
+        }
+
+        public void RemoveVehicle(int posOfVehicle)
+        {
+            Console.WriteLine("Removing vehicle at pos " + posOfVehicle);
+            _vehicles.RemoveAt(posOfVehicle);
+        }
+
+        public void RemoveVehicle(Vehicle vehicleToRemove)
+        {
+            var existingVehicle = _vehicles.FirstOrDefault(v => v.Id == vehicleToRemove.Id);
+
+            if (existingVehicle == null || vehicleToRemove == null || vehicleToRemove.IsValid()!)
+            {
+                throw new RemoveAutoException();
+            }
+
+            var pos = _vehicles.IndexOf(existingVehicle);
+            _vehicles.RemoveAt(pos);
         }
 
         public IEnumerable<Vehicle> GetAutoByParameter(string propertyName, string value)
@@ -170,6 +206,19 @@ namespace CarParkProject_0506.Data.Services
             }
 
             return results;
+        }
+
+        public IEnumerable<Vehicle> GetAutoByParameter2(string propertyName, string paramValue)
+        {
+            var hasProperty = _vehicles.Any(v => v.HasProperty(propertyName));
+
+            if (!hasProperty)
+            {
+                throw new GetAutoByParameterException(propertyName);
+            }
+
+            return _vehicles.Where(v => v.IsMatch(propertyName, paramValue));
+            
         }
 
         private static void AddProperty(PropertyInfo? propertyInfo, List<PropertyInfo> propertiesByName)

@@ -10,8 +10,8 @@ namespace CarParkProject_0506.Data
             
         }
 
-        public Bus(short levels, Engine engine, Transmission transmission, Chassis chassis)
-            : base(engine, transmission, chassis)
+        public Bus(short levels, ushort id, Engine engine, Transmission transmission, Chassis chassis)
+            : base(id, engine, transmission, chassis)
         {
             if(levels <= 0)
             {
@@ -31,6 +31,20 @@ namespace CarParkProject_0506.Data
         public override bool IsValid()
         {
             return Levels > 0 && Levels <= 2 && base.IsValid();
+        }
+
+        public override bool HasProperty(string name)
+        {
+            return name == nameof(Levels) || base.HasProperty(name);
+        }
+
+        public override bool IsMatch(string propertyName, string query)
+        {
+            if (nameof(Levels) == propertyName)
+            {
+                return Levels.ToString() == query;
+            }
+            return base.IsMatch(propertyName, query);
         }
     }
 }

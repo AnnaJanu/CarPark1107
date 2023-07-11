@@ -13,30 +13,47 @@ namespace CarParkProject_0506.Data
     {
         public Vehicle() { }
 
-        public Vehicle(Engine engine, Transmission transmission, Chassis chassis)
+        public Vehicle(ushort id, Engine engine, Transmission transmission, Chassis chassis)
         {
-            if (engine == null || transmission == null || chassis == null)
+            if (engine == null || transmission == null || chassis == null || id == null)
             {
                 throw new InitializationException();
             }
 
+            Id = id;
             Engine = engine;
             Transmission = transmission;
             Chassis = chassis;
         }
 
+        public ushort Id { get; set; }
         public Engine Engine { get; set; }
         public Transmission Transmission { get; set; }
         public Chassis Chassis { get; set; }
 
-        public virtual string  GetDetails()
+        public virtual string GetDetails()
         {
-            return $"{Engine} {Transmission} {Chassis}";
+            return $"Id: {Id}\n{Engine} {Transmission} {Chassis}";
         }
 
         public virtual bool IsValid()
         {
             return true;
         }
+
+        public virtual bool HasProperty(string name)
+        {
+            return Engine.HasProperty(name)
+                || Chassis.HasProperty(name)
+                || Transmission.HasProperty(name);
+        }
+
+        public virtual bool IsMatch(string propertyName, string query)
+        {
+            return Engine.IsMatch(propertyName, query)
+                || Chassis.IsMatch(propertyName, query)
+                || Transmission.IsMatch(propertyName, query);
+        }
+
     }
 }

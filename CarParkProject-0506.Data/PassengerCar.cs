@@ -8,8 +8,8 @@
             
         }
 
-        public PassengerCar(BuildTypeEnum buildType, Engine engine, Transmission transmission, Chassis chassis)
-            : base(engine, transmission, chassis)
+        public PassengerCar(BuildTypeEnum buildType, ushort id, Engine engine, Transmission transmission, Chassis chassis)
+            : base(id, engine, transmission, chassis)
         {
             BuildType = buildType;
         }
@@ -19,6 +19,20 @@
         public override string GetDetails()
         {
             return $"BuildType:{BuildType}\n" + base.GetDetails();
+        }
+
+        public override bool HasProperty(string name)
+        {
+            return name == nameof(BuildType) || base.HasProperty(name);
+        }
+
+        public override bool IsMatch(string propertyName, string query)
+        {
+            if (nameof(BuildType) == propertyName)
+            {
+                return BuildType.ToString() == query;
+            }
+            return base.IsMatch(propertyName, query);
         }
 
     }

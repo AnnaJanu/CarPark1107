@@ -8,5 +8,7 @@ namespace CarParkProject_0506.Data.Exceptions
 {
     public class UpdateAutoException : Exception
     {
+        public UpdateAutoException() : base("Unable to update object")
+        { }
     }
 }

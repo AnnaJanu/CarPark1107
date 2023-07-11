@@ -8,5 +8,7 @@ namespace CarParkProject_0506.Data.Exceptions
 {
     public class RemoveAutoException : Exception
     {
+        public RemoveAutoException() :base("Unable to remove object")
+        { }
     }
 }

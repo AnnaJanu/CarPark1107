@@ -8,8 +8,8 @@
             
         }
 
-        public Scooter(Engine engine, Transmission transmission, Chassis chassis)
-            : base(engine, transmission, chassis)
+        public Scooter(ushort id, Engine engine, Transmission transmission, Chassis chassis)
+            : base(id, engine, transmission, chassis)
         {
             
         }
@@ -18,5 +18,7 @@
         {
             return base.GetDetails();
         }
+
+        
     }
 }

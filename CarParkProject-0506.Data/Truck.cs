@@ -10,8 +10,8 @@ namespace CarParkProject_0506.Data
             
         }
 
-        public Truck(float volume, Engine engine, Transmission transmission, Chassis chassis)
-            : base(engine, transmission, chassis)
+        public Truck(float volume, ushort id, Engine engine, Transmission transmission, Chassis chassis)
+            : base(id, engine, transmission, chassis)
         {
             if(volume <= 0)
             {
@@ -31,6 +31,20 @@ namespace CarParkProject_0506.Data
         public override bool IsValid()
         {
             return Volume > 0 && Volume <= 1000 && base.IsValid();
+        }
+
+        public override bool HasProperty(string name)
+        {
+            return name == nameof(Volume) || base.HasProperty(name);
+        }
+
+        public override bool IsMatch(string propertyName, string query)
+        {
+            if (nameof(Volume) == propertyName)
+            {
+                return Volume.ToString() == query;
+            }
+            return base.IsMatch(propertyName, query);
         }
     }
 }
